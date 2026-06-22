@@ -1,0 +1,9 @@
+{
+  "name": "security-scan",
+  "description": "Scan a repository for security vulnerabilities and print a findings report.",
+  "version": "0.1.0",
+  "author": { "name": "charisk" },
+  "license": "MIT",
+  "keywords": ["security", "vulnerabilities", "scan", "audit"],
+  "skills": "skills/"
+}
