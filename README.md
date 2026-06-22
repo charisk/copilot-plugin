@@ -3,9 +3,10 @@
 A simple GitHub Copilot CLI **plugin** that scans a repository for security
 vulnerabilities and prints a findings report.
 
-It is skills-only (no MCP server, no binaries) — it drives Copilot's built-in
-tools to inspect dependencies and source code, then reports. It never modifies
-your code.
+It is skills-only (no MCP server, no binaries) and strictly read-only — it uses
+only Copilot's file-reading and search tools (no shell commands) to inspect
+dependencies and source code, then reports. It never runs terminal commands and
+never modifies your code.
 
 ## Structure
 
