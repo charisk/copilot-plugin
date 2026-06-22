@@ -15,10 +15,19 @@ never modifies your code.
 ├── .github/
 │   └── plugin/
 │       └── plugin.json          # Plugin manifest
+├── agents/
+│   └── main.md                  # Entry agent
 └── skills/
     └── security-scan/
         └── SKILL.md             # The security scan skill
 ```
+
+## Agent
+
+| Agent  | Description                                                                       |
+| ------ | -------------------------------------------------------------------------------- |
+| `main` | Entry agent for the plugin. Reuses the `security-scan` skill; read-only.          |
+
 
 ## Skills
 
