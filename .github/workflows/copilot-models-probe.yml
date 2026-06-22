@@ -1,0 +1,45 @@
+# Probe Copilot /models endpoint for current integration context
+# Outputs model IDs available in this integration without exposing tokens
+# Useful for debugging model availability and integration configuration
+
+name: Copilot Models Probe
+on:
+  workflow_dispatch
+
+jobs:
+  probe-models:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate environment variables
+        run: |
+          if [ -z "$GITHUB_COPILOT_API_TOKEN" ]; then
+            echo "Error: GITHUB_COPILOT_API_TOKEN is not set"
+            exit 1
+          fi
+          if [ -z "$GITHUB_COPILOT_INTEGRATION_ID" ]; then
+            echo "Error: GITHUB_COPILOT_INTEGRATION_ID is not set"
+            exit 1
+          fi
+        env:
+          GITHUB_COPILOT_API_TOKEN: ${{ secrets.GITHUB_COPILOT_API_TOKEN }}
+          GITHUB_COPILOT_INTEGRATION_ID: ${{ secrets.GITHUB_COPILOT_INTEGRATION_ID }}
+
+      - name: Probe /models endpoint
+        run: |
+          API_URL="${COPILOT_API_URL:-https://api.githubcopilot.com}"
+          
+          echo "Integration ID: $GITHUB_COPILOT_INTEGRATION_ID"
+          echo ""
+          echo "Available models (model_picker_enabled != false):"
+          echo ""
+          
+          curl -fsS -X GET \
+            -H "Authorization: Bearer $GITHUB_COPILOT_API_TOKEN" \
+            -H "Copilot-Integration-Id: $GITHUB_COPILOT_INTEGRATION_ID" \
+            -H "Accept: application/json" \
+            "$API_URL/models" | \
+            jq -r '.data[] | select(.model_picker_enabled != false) | .id'
+        env:
+          COPILOT_API_URL: ${{ vars.COPILOT_API_URL }}
+          GITHUB_COPILOT_API_TOKEN: ${{ secrets.GITHUB_COPILOT_API_TOKEN }}
+          GITHUB_COPILOT_INTEGRATION_ID: ${{ secrets.GITHUB_COPILOT_INTEGRATION_ID }}
