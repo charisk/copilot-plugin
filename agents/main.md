@@ -1,6 +1,7 @@
 ---
 name: main
 description: Entry agent for the security-scan plugin. Scans the repository for security vulnerabilities and prints a findings report.
+model: gpt-5.3-codex
 tools: Glob Grep Read View
 skills:
   - security-scan
