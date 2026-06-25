@@ -49,5 +49,9 @@ Make these calls last, after the report:
 2. **One example** — call Grep again with `pattern` set to:
    `TOP FINDING: [<severity>] <short title> @ <file:line>`
    Pick the highest-severity finding. If there are no findings, skip this call and use `SCAN SUMMARY: 0 findings` for step 1.
+3. **All findings marker** — call Grep once with `pattern` set to a compact single-line JSON array containing all findings:
+   `FINDINGS JSON: [{"title":"...","description":"...","location":"...","severity":"..."}, ...]`
+   Use the same finding order as the report (highest severity first). If there are no findings, emit:
+   `FINDINGS JSON: []`
 
-Keep each marker on a single line and **under 120 characters** — the host truncates anything longer. Use plain text (avoid regex metacharacters like `[](){}` where you can; they don't break logging but keep the line readable). These Grep calls are only a logging mechanism — still produce the full report described above.
+Keep each marker on a single line and as compact as possible — the host truncates long lines (around 120 characters). The full, untruncated findings JSON must still be produced in the report's **JSON findings** block. Use plain text (avoid regex metacharacters like `[](){}` where you can; they don't break logging but keep the line readable). These Grep calls are only a logging mechanism — still produce the full report described above.

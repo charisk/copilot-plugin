@@ -73,14 +73,15 @@ Example:
 
 ### Results in CI / workflow logs
 
-When the plugin runs inside the coding-agent runtime (e.g. a GitHub Actions job), the agent's full report is sent to the progress channel rather than stdout, so the workflow log only shows one-line tool-call summaries. To keep the outcome visible there, the skill emits a couple of short marker lines at the end of the scan via the read-only Grep tool, for example:
+When the plugin runs inside the coding-agent runtime (e.g. a GitHub Actions job), the agent's full report is sent to the progress channel rather than stdout, so the workflow log only shows one-line tool-call summaries. To keep the outcome visible there, the skill emits short marker lines at the end of the scan via the read-only Grep tool, including one aggregated findings marker, for example:
 
 ```
 SCAN SUMMARY: 7 finding(s) - 1 Critical, 3 High, 2 Medium, 1 Low
 TOP FINDING: [Critical] SQL injection @ routes/login.ts:42
+FINDINGS JSON: [{"title":"SQL injection","description":"Unsanitized SQL input","location":"routes/login.ts:42","severity":"Critical"}]
 ```
 
-These markers are truncated to ~120 characters by the host. The full report is still produced in full for callers that read the progress channel or session state.
+These markers may be truncated to ~120 characters by the host. The full findings JSON is still produced in full in the report's JSON findings block for callers that read the progress channel or session state.
 
 ## Installing locally
 
