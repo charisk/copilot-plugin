@@ -40,7 +40,36 @@ Once the plugin is installed, ask Copilot CLI something like:
 scan for security vulnerabilities in this repo and print your findings
 ```
 
-Copilot loads the `security-scan` skill automatically, inspects dependencies and source code, then prints a report with a risk summary, a list of findings (severity, location, recommendation), and any scan gaps.
+Copilot loads the `security-scan` skill automatically, inspects dependencies and source code, then prints a report with:
+
+- a risk summary
+- a list of findings (severity, location, description, recommendation)
+- a **JSON findings block** — a fenced `json` array you can pipe to other tools
+- any scan gaps
+
+### JSON findings format
+
+Each object in the JSON array has these fields:
+
+| Field | Type | Description |
+|---|---|---|
+| `title` | string | Short name for the finding |
+| `description` | string | What the issue is and why it matters |
+| `location` | string | `"file:line"` or `"unknown"` |
+| `severity` | string | `"Critical"`, `"High"`, `"Medium"`, or `"Low"` |
+
+Example:
+
+```json
+[
+  {
+    "title": "SQL injection in login handler",
+    "description": "User input is directly concatenated into a SQL query without sanitization.",
+    "location": "routes/login.ts:42",
+    "severity": "Critical"
+  }
+]
+```
 
 ### Results in CI / workflow logs
 

@@ -12,9 +12,29 @@ Review this repository for security vulnerabilities and report what you find.
 
 ## Output
 
-- **Summary** — one paragraph on the overall risk posture.
-- **Findings** — each with severity (Critical / High / Medium / Low), location (`file:line`), description, and recommendation.
-- **Gaps** — checks that could not be performed by static inspection alone.
+Produce the following sections in order:
+
+1. **Summary** — one paragraph on the overall risk posture.
+2. **Findings** — each with severity (Critical / High / Medium / Low), location (`file:line`), description, and recommendation.
+3. **Gaps** — checks that could not be performed by static inspection alone.
+4. **JSON findings** — a fenced `json` code block containing an array of every finding. Each object must have exactly these fields:
+   - `title` — short name for the finding
+   - `description` — what the issue is and why it matters
+   - `location` — `"file:line"` string (use `"unknown"` if no specific location)
+   - `severity` — one of `"Critical"`, `"High"`, `"Medium"`, `"Low"`
+
+   Example:
+   ```json
+   [
+     {
+       "title": "SQL injection in login handler",
+       "description": "User input is directly concatenated into a SQL query without sanitization, allowing an attacker to read or modify the database.",
+       "location": "routes/login.ts:42",
+       "severity": "Critical"
+     }
+   ]
+   ```
+   Emit an empty array `[]` if there are no findings.
 
 If no issues are found, say so explicitly and note what you checked.
 
